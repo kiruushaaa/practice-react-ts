@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   lint:
@@ -70,6 +70,7 @@ jobs:
 
   build:
     name: Build Project
+    needs: [lint, type-check, test, security]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
