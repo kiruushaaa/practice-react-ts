@@ -125,10 +125,12 @@ jobs:
       - run: pnpm install
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Log BASE_URL
+        run: echo "BASE_URL is ${{ needs.deploy.outputs.page_url }}"
       - name: Run Playwright tests
         run: pnpm run test:e2e
         env:
-          BASE_URL: ${{ needs.deploy.outputs.page_url }}/${{ github.event.repository.name}}
+          BASE_URL: ${{ needs.deploy.outputs.page_url }}
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v4
