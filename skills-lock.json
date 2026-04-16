@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "effector-playbook": {
+      "source": "neolite/effector-playbook",
+      "sourceType": "github",
+      "computedHash": "777721c11f100c4b5b73927dcf3e8f12f60c41969abb9c8c7574b7256e789507"
+    }
+  }
+}
