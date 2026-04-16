@@ -33,20 +33,48 @@ export const Game = () => {
       </div>
 
       <div className="board">
-        {Array.from({ length: COLS }).map((_, colIndex) => (
-          <div
-            key={colIndex}
-            className="column"
-            onClick={() => dropPiece(colIndex)}
-          >
-            {board.map((_row, rowIndex) => (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className={`slot ${board[rowIndex][colIndex] ? `filled ${board[rowIndex][colIndex]} falling` : ''}`}
-              />
-            ))}
-          </div>
-        ))}
+        <div className="pieces-layer">
+          {Array.from({ length: COLS }).map((_, colIndex) => (
+            <div key={`col-piece-${colIndex}`} className="column">
+              {board.map((_row, rowIndex) => (
+                <div
+                  key={`piece-${rowIndex}-${colIndex}`}
+                  className={`slot ${board[rowIndex][colIndex] ? `filled ${board[rowIndex][colIndex]} falling` : ''}`}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="overlay-layer">
+          {Array.from({ length: COLS }).map((_, colIndex) => (
+            <div key={`col-overlay-${colIndex}`} className="column">
+              {board.map((_row, rowIndex) => (
+                <div
+                  key={`overlay-${rowIndex}-${colIndex}`}
+                  className="overlay-slot"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="interaction-layer">
+          {Array.from({ length: COLS }).map((_, colIndex) => (
+            <div
+              key={`col-interact-${colIndex}`}
+              className="column"
+              onClick={() => dropPiece(colIndex)}
+            >
+              {board.map((_row, rowIndex) => (
+                <div
+                  key={`interact-${rowIndex}-${colIndex}`}
+                  className="slot-invisible"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       <button className="reset-button" onClick={() => resetGame()}>

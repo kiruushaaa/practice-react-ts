@@ -9,43 +9,43 @@ test.describe('Game Logic E2E', () => {
     const board = page.locator('.board');
     await expect(board).toBeVisible();
 
-    const columns = page.locator('.column');
-    // COLS = 7 (based on standard 4-in-a-row or common project types,
-    // but we should check if it's specifically 7)
+    const columns = page.locator('.interaction-layer .column');
     await expect(columns).toHaveCount(7);
   });
 
   test('should allow choosing a column and dropping a piece', async ({
     page,
   }) => {
-    const firstColumn = page.locator('.column').first();
+    const interactionColumns = page.locator('.interaction-layer .column');
+    const piecesSlots = page
+      .locator('.pieces-layer .column')
+      .first()
+      .locator('.slot');
+    const firstColumn = interactionColumns.first();
+    const bottomSlot = piecesSlots.last();
 
-    // Check that initially the bottom slot is empty
-    const slots = page.locator('.column').first().locator('.slot');
-    const bottomSlot = slots.last();
     await expect(bottomSlot).not.toHaveClass(/filled/);
 
-    // Click column to drop piece
     await firstColumn.click();
 
-    // Check that the bottom slot is now filled
     await expect(bottomSlot).toHaveClass(/filled/);
   });
 
   test('should change the current player after a move', async ({ page }) => {
     const playerToken = page.locator('.player-token');
 
-    // Initial player should be 'X'
     await expect(playerToken).toHaveText('X');
 
-    const firstColumn = page.locator('.column').first();
+    const firstColumn = page.locator('.interaction-layer .column').first();
     await firstColumn.click();
 
-    // Player should change to 'O'
     await expect(playerToken).toHaveText('O');
 
-    // Check that the marker placed in the slot is 'X'
-    const bottomSlot = page.locator('.column').first().locator('.slot').last();
+    const bottomSlot = page
+      .locator('.pieces-layer .column')
+      .first()
+      .locator('.slot')
+      .last();
     await expect(bottomSlot).toHaveClass(/X/);
   });
 });

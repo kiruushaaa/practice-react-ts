@@ -26,3 +26,6 @@ dist-ssr
 # Tests artifacts
 playwright-report
 test-results
+
+# MCP
+.playwright-mcp
