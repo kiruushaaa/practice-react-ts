@@ -20,19 +20,25 @@ export const createGameModel = () => {
 
   const dropPiece = createEvent<number>();
   const resetGame = createEvent<void>();
-  const updateBoard = createEvent<{ board: Board; player: Player }>();
+  type UpdateBoardEvent = { board: Board; player: Player };
+  const updateBoard = createEvent<UpdateBoardEvent>();
 
   sample({
     clock: dropPiece,
     source: { board: $board, player: $currentPlayer, status: $gameStatus },
-    filter: ({ status }) => status === 'playing',
+    filter: ({ status }, col) => {
+      return (
+        status === 'playing' &&
+        getLowestAvailableRow($board.getState(), col) !== null
+      );
+    },
     fn: ({ board, player }, col) => {
-      const row = getLowestAvailableRow(board, col);
-      if (row === null) return null;
+      const row = getLowestAvailableRow(board, col)!;
 
       const newBoard = board.map((rowArr: CellValue[]) => [...rowArr]);
       newBoard[row][col] = player;
-      return { board: newBoard, player: player };
+      const result: UpdateBoardEvent = { board: newBoard, player };
+      return result;
     },
     target: updateBoard,
   });
