@@ -11,6 +11,7 @@ import { useUnit } from "effector-react";
 import { $counter, increased, sendToServerFx } from "./model";
 
 const Component = () => {
+  // Don't split into separate `useUnit` hook calls. Always use object or array structure being passed as an argument.
   const [counter, increase, sendToServer] = useUnit([$counter, increased, sendToServerFx]);
 
   return (
